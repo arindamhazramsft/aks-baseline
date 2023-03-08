@@ -24,7 +24,7 @@ param targetVnetResourceId string
   'southeastasia'
 ])
 @description('AKS Service, Node Pool, and supporting services (KeyVault, App Gateway, etc) region. This needs to be the same region as the vnet provided in these parameters.')
-param location string = 'eastus2'
+param location string = 'eastus'
 
 @allowed([
   'australiasoutheast'
@@ -50,7 +50,7 @@ param location string = 'eastus2'
   'southeastasia'
 ])
 @description('For Azure resources that support native geo-redunancy, provide the location the redundant service will have its secondary. Should be different than the location parameter and ideally should be a paired region - https://learn.microsoft.com/azure/best-practices-availability-paired-regions. This region does not need to support availability zones.')
-param geoRedundancyLocation string = 'centralus'
+param geoRedundancyLocation string = 'westus'
 
 /*** VARIABLES ***/
 
@@ -62,7 +62,7 @@ resource spokeResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' exis
   scope: subscription()
   name: '${split(targetVnetResourceId,'/')[4]}'
 }
-
+//'${split(targetVnetResourceId,'/')[4]}'
 resource spokeVirtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   scope: spokeResourceGroup
   name: '${last(split(targetVnetResourceId,'/'))}'
@@ -130,7 +130,7 @@ resource dnsPrivateZoneAcr 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   location: 'global'
   properties: {}
 
-  resource dnsVnetLinkAcrToSpoke 'virtualNetworkLinks@2020-06-01' = {
+/*   resource dnsVnetLinkAcrToSpoke 'virtualNetworkLinks@2020-06-01' = {
     name: 'to_${spokeVirtualNetwork.name}'
     location: 'global'
     properties: {
@@ -139,8 +139,8 @@ resource dnsPrivateZoneAcr 'Microsoft.Network/privateDnsZones@2020-06-01' = {
       }
       registrationEnabled: false
     }
-  }
-}
+  } */
+} 
 
 // The Container Registry that the AKS cluster will be authorized to use to pull images.
 resource acrAks 'Microsoft.ContainerRegistry/registries@2021-09-01' = {

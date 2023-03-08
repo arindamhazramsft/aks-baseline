@@ -37,7 +37,7 @@ resource hubResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' existi
   scope: subscription()
   name: '${split(hubVnetResourceId,'/')[4]}'
 }
-
+//'${split(hubVnetResourceId,'/')[4]}'
 resource hubVirtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   scope: hubResourceGroup
   name: '${last(split(hubVnetResourceId,'/'))}'
