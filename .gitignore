@@ -5,3 +5,4 @@
 *.pem
 aks_baseline.env
 *.txt
+/pre-requisites
